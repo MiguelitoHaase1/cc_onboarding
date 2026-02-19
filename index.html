@@ -1283,97 +1283,83 @@
     <div class="ws-header" onclick="toggleStep(this)">
       <div class="ws-num"><span class="num-text">7</span><span class="num-check">&#10003;</span></div>
       <div class="ws-header-text">
-        <div class="ws-label">Prepare</div>
-        <h2>Pull source material into your project</h2>
+        <div class="ws-label">Create</div>
+        <h2>Build your personal Operating System</h2>
       </div>
-      <span class="ws-progress-badge" data-badge="7">0 / 3</span>
+      <span class="ws-progress-badge" data-badge="7">0 / 4</span>
       <span class="ws-chevron">&#9662;</span>
     </div>
     <div class="ws-body">
-      <p class="ws-desc">AI output is only as good as the context you give it. By dropping your reference documents into a project folder, Claude can read, synthesize, and build on <em>real material</em> &mdash; not hallucinate from thin air. Better input equals dramatically better output.</p>
+      <p class="ws-desc">This is the payoff. Everything comes together &mdash; your folder structure, your skills, your style guides, and now your own context. You'll give Claude everything it needs to know about <em>you</em>, then have it interview you to build a polished HTML page: your personal operating system &mdash; a guide for anyone who works with you.</p>
 
       <div class="ws-ref">
         <div class="tip">
           <span>&#9889;</span>
-          <span><strong>Why context matters:</strong> Claude reads every file in your project. The more relevant material you give it, the more accurate, specific, and useful its output becomes. Think of source documents as Claude's research library.</span>
+          <span><strong>The compound effect:</strong> Each step wasn't just setup &mdash; it was context. Claude knows your aesthetic, your voice, and now your source material. That's why the output feels like <em>you</em> made it, not a machine. This is the pattern for everything you'll build.</span>
         </div>
       </div>
 
       <div class="ws-tasks-ref">
         <div class="folder-tree">
-          <div><span class="folder">AI / doc_creation /</span></div>
-          <div>&ensp;&ensp;<span class="folder">my-first-pdf /</span></div>
-          <div>&ensp;&ensp;&ensp;&ensp;<span class="folder">sources /</span> <span class="desc">&larr; your reference docs go here</span></div>
+          <div><span class="folder">AI / career /</span></div>
+          <div>&ensp;&ensp;<span class="folder">my-os /</span> <span class="desc">&larr; your personal OS project</span></div>
+          <div>&ensp;&ensp;&ensp;&ensp;<span class="folder">sources /</span> <span class="desc">CVs, resumes, bios, anything about you</span></div>
         </div>
 
-        <div class="tip">
-          <span>&#128193;</span>
-          <span><strong>Use your file manager for this step.</strong> Navigate to <code>doc_creation</code> inside your AI folder. Create a new folder called <code>my-first-pdf</code>, and inside that, create a <code>sources</code> folder. Then drag your reference documents into it.</span>
+        <div class="info">
+          <span>&#128172;</span>
+          <span><strong>Use Wispr for this step &mdash; it matters.</strong> Claude will interview you about how you work, think, and communicate. The richer your answers, the better your OS. Speaking out loud unlocks more depth than typing &mdash; you'll share things you wouldn't bother to write. Let the words flow.</span>
         </div>
       </div>
 
       <ul class="ws-checklist">
         <li class="ws-check-item" data-id="7-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Create a <code>my-first-pdf</code> folder with a <code>sources</code> subfolder<span class="ws-check-detail">Inside AI &rarr; doc_creation</span></span>
+          <span class="ws-check-label">
+            Create a <code>my-os</code> folder with a <code>sources</code> subfolder inside <code>AI/career</code>
+            <span class="ws-check-detail">Open Finder or File Explorer. Navigate to your AI &rarr; career folder, and create the folders shown above.</span>
+          </span>
         </li>
         <li class="ws-check-item" data-id="7-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Drag at least one reference document into <code>sources</code><span class="ws-check-detail">PDF, Word doc, notes &mdash; anything with content you want in the output</span></span>
+          <span class="ws-check-label">
+            Drop your personal documents into <code>sources</code>
+            <span class="ws-check-detail">CV, resume, LinkedIn export, bio, performance reviews, team feedback &mdash; anything that describes who you are professionally. The more context, the better the output.</span>
+          </span>
         </li>
         <li class="ws-check-item" data-id="7-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Open your terminal, navigate to <code>my-first-pdf</code>, and type <code>claude</code><span class="ws-check-detail">This opens Claude in your project folder so it can see your source documents</span></span>
+          <span class="ws-check-label">
+            Open your terminal, navigate to <code>my-os</code>, and type <code>claude</code>
+            <span class="ws-check-detail">This opens Claude in your project folder so it can read your source documents.</span>
+          </span>
         </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ─── Step 8 ─── -->
-  <div class="ws-step" id="ws-8" data-step="8">
-    <div class="ws-header" onclick="toggleStep(this)">
-      <div class="ws-num"><span class="num-text">8</span><span class="num-check">&#10003;</span></div>
-      <div class="ws-header-text">
-        <div class="ws-label">Create</div>
-        <h2>Make your first shiny PDF</h2>
-      </div>
-      <span class="ws-progress-badge" data-badge="8">0 / 3</span>
-      <span class="ws-chevron">&#9662;</span>
-    </div>
-    <div class="ws-body">
-      <p class="ws-desc">This is the payoff. Everything comes together &mdash; your folder structure, your skills, your style guides, your source material. One prompt, and Claude builds a polished, branded document. Same pattern works for slide decks, spreadsheets, web apps, and anything else you'll build with Claude.</p>
-
-      <div class="ws-ref">
-        <div class="tip">
-          <span>&#9889;</span>
-          <span><strong>The compound effect:</strong> Each step we took wasn't just setup &mdash; it was context. Claude now knows your aesthetic, your voice, and your source material. That's why the output feels like <em>you</em> made it, not a machine.</span>
-        </div>
-      </div>
-
-      <div class="ws-tasks-ref">
-        <div class="info">
-          <span>&#128172;</span>
-          <span><strong>Just describe what you want.</strong> Claude already has your sources, your visual identity, and your writing style. Tell it what to build in your own words &mdash; or speak it with Wispr.</span>
-        </div>
-
-        <div class="prompt-example">
-          <strong>Just say this</strong>
-          "Create a polished PDF from the sources in my sources folder. Use my visual-identity.md for styling and writing-style.md for tone. Make it look professional and on-brand."
-        </div>
-      </div>
-
-      <ul class="ws-checklist">
-        <li class="ws-check-item" data-id="8-1" onclick="check(this)">
+        <li class="ws-check-item" data-id="7-4" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Tell Claude to create your PDF<span class="ws-check-detail">Describe what you want &mdash; reference your sources, visual identity, and writing style</span></span>
-        </li>
-        <li class="ws-check-item" data-id="8-2" onclick="check(this)">
-          <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Review the output and iterate if needed<span class="ws-check-detail">Just say what you'd change &mdash; &ldquo;make the headings bigger&rdquo; or &ldquo;more casual tone&rdquo;</span></span>
-        </li>
-        <li class="ws-check-item" data-id="8-3" onclick="check(this)">
-          <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Open the PDF and confirm it looks great<span class="ws-check-detail">Your brand colors, fonts, and voice should all be there</span></span>
+          <span class="ws-check-label">
+            Paste the prompt below and let Claude interview you
+            <span class="ws-check-detail">Use Wispr to dictate your answers &mdash; speak freely and give long, detailed responses. When Claude is done asking questions, it will build your personal OS as a beautiful HTML page.</span>
+            <div class="prompt-example" style="margin-top: 10px; font-style: normal;" onclick="event.stopPropagation()">
+              <strong>Copy this prompt into Claude</strong>
+              Read everything in the ./sources/ folder to learn about me. Then interview me to build my personal Operating System &mdash; a single, beautiful HTML page that explains to anyone how to work with me effectively.<br><br>
+
+              Ask me ONE question at a time. Wait for my answer before moving on. I'll be dictating my answers with voice, so expect conversational responses &mdash; dig into them and ask follow-ups when something is interesting.<br><br>
+
+              Cover these areas, in whatever order feels natural:<br>
+              &bull; How I communicate (do I prefer async or real-time? written or verbal? how much context do I need?)<br>
+              &bull; How I make decisions (fast and intuitive, or slow and deliberate? do I want data or gut feel?)<br>
+              &bull; What gives me energy vs. what drains me<br>
+              &bull; How I handle disagreement and feedback (how should someone push back on me?)<br>
+              &bull; My working rhythm (when am I sharpest? how do I structure my day?)<br>
+              &bull; Meeting preferences (what makes a meeting worth having vs. what should be an email?)<br>
+              &bull; My strengths and where I know I need support<br>
+              &bull; Pet peeves and things that will immediately build trust<br>
+              &bull; How I like to collaborate (do I like pairing? do I prefer to go deep alone then sync?)<br>
+              &bull; What people get wrong about me at first<br><br>
+
+              After you've asked enough questions to really understand me (at least 12-15 questions), build the HTML page. Use my visual-identity.md for styling. Make it striking and personal &mdash; not a boring document, but something I'd be proud to share. Include clear sections with personality. The page should make someone think: "Now I know exactly how to work with this person."
+            </div>
+          </span>
         </li>
       </ul>
     </div>
@@ -1385,7 +1371,7 @@
 <div class="all-done" id="allDone">
   <div class="all-done-icon">&#127881;</div>
   <h2>Workshop complete!</h2>
-  <p>You have a fully configured Claude Code setup: organized folders, installed skills, personal style guides, and a real document to show for it. Same pattern works for slide decks, spreadsheets, web apps, and anything else.</p>
+  <p>You have a fully configured Claude Code setup: organized folders, installed skills, personal style guides, and your own operating system to show for it. Same pattern works for slide decks, spreadsheets, web apps, and anything else you'll build with Claude.</p>
 </div>
 
 <footer class="footer">
@@ -1394,7 +1380,7 @@
 
 <script>
   const STORAGE_KEY = 'cc-workshop-v2';
-  const TOTAL_STEPS = 8;
+  const TOTAL_STEPS = 7;
 
   // ── State ──
   let state = {};
