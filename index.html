@@ -994,14 +994,14 @@
     <div class="ws-header" onclick="toggleStep(this)">
       <div class="ws-num"><span class="num-text">2</span><span class="num-check">&#10003;</span></div>
       <div class="ws-header-text">
-        <div class="ws-label">Getting Started</div>
+        <div class="ws-label">Install</div>
         <h2>Subscribe and install Claude Code</h2>
       </div>
-      <span class="ws-progress-badge" data-badge="2">0 / 4</span>
+      <span class="ws-progress-badge" data-badge="2">0 / 3</span>
       <span class="ws-chevron">&#9662;</span>
     </div>
     <div class="ws-body">
-      <p class="ws-desc">Head to <a href="https://claude.ai" target="_blank" style="color: var(--coral); font-weight: 500;">claude.ai</a> and sign up for a Claude Pro subscription. Once you're in, Claude will nudge you to install Claude Code &mdash; follow that flow. The easiest way to get it running is through VS Code: just install the extension and you're good to go.</p>
+      <p class="ws-desc">First, head to <a href="https://claude.ai" target="_blank" style="color: var(--coral); font-weight: 500;">claude.ai</a> and subscribe to Claude Pro. Once you're in, Claude will nudge you to install Claude Code &mdash; follow that flow. It will guide you to run a single install command in your terminal. That's all it takes.</p>
 
       <div class="ws-ref">
         <div class="tip">
@@ -1013,8 +1013,66 @@
       <div class="ws-tasks-ref">
         <div class="info">
           <span>i</span>
-          <span><strong>VS Code makes this easy.</strong> Instead of installing via the terminal, we'll use the Claude Code extension for VS Code. It handles all the setup for you &mdash; no commands to memorize, no PATH issues, just install and go.</span>
+          <span><strong>Open your terminal:</strong> Terminal on Mac (search &ldquo;Terminal&rdquo; in Spotlight) &middot; PowerShell on Windows (search &ldquo;PowerShell&rdquo; in Start) &middot; Your preferred terminal on Linux.</span>
         </div>
+
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
+            <span class="terminal-title">Terminal &mdash; Mac / Linux</span>
+          </div>
+          <div class="terminal-body">
+            <span class="prompt">$</span> <span class="cmd">curl <span class="flag">-fsSL</span> https://claude.ai/install.sh | bash</span>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
+            <span class="terminal-title">PowerShell &mdash; Windows</span>
+          </div>
+          <div class="terminal-body">
+            <span class="prompt">&gt;</span> <span class="cmd">irm https://claude.ai/install.ps1 | iex</span>
+          </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <details class="troubleshoot-section">
+          <summary>Troubleshooting common issues</summary>
+          <div class="troubleshoot-group">
+
+            <details class="troubleshoot-item">
+              <summary><code>command not found: claude</code> after install</summary>
+              <div class="ts-body">
+                <p><strong>Restart your terminal</strong> (close and reopen it completely). The installer adds Claude Code to your PATH, but most terminals only read PATH on startup.</p>
+              </div>
+            </details>
+
+            <details class="troubleshoot-item">
+              <summary><code>permission denied</code> errors on Mac/Linux</summary>
+              <div class="ts-body">
+                <p>Try running the install command again &mdash; the native installer handles permissions automatically. If it still fails, check that <code>~/.local/bin</code> exists and is in your PATH.</p>
+              </div>
+            </details>
+
+            <details class="troubleshoot-item">
+              <summary>PowerShell script execution is disabled (Windows)</summary>
+              <div class="ts-body">
+                <p>Open PowerShell <strong>as Administrator</strong> and run:</p>
+                <p><code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code></p>
+                <p>Then try the install command again in a regular PowerShell window.</p>
+              </div>
+            </details>
+
+            <details class="troubleshoot-item">
+              <summary>Still stuck? Try the VS Code approach instead</summary>
+              <div class="ts-body">
+                <p>If the terminal install isn't working, there's an easier alternative: install <a href="https://code.visualstudio.com" target="_blank" style="color: var(--coral);">VS Code</a>, then add the <strong>Claude Code</strong> extension (Extensions sidebar &rarr; search &ldquo;Claude Code&rdquo; &rarr; Install). The extension handles the entire setup for you &mdash; no terminal commands, no PATH issues. Once installed, click the Claude Code icon in VS Code&rsquo;s sidebar and sign in.</p>
+              </div>
+            </details>
+
+          </div>
+        </details>
       </div>
 
       <ul class="ws-checklist">
@@ -1024,15 +1082,11 @@
         </li>
         <li class="ws-check-item" data-id="2-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Download and install <a href="https://code.visualstudio.com" target="_blank" style="color: var(--coral);">VS Code</a><span class="ws-check-detail">Skip this if you already have VS Code installed</span></span>
+          <span class="ws-check-label">Follow the install flow and run the command for your OS<span class="ws-check-detail">Claude.ai will guide you. Or copy the one-liner above for Mac/Linux or Windows.</span></span>
         </li>
         <li class="ws-check-item" data-id="2-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Install the <strong>Claude Code</strong> extension in VS Code<span class="ws-check-detail">Open VS Code &rarr; Extensions sidebar (&#8984;&#8679;X on Mac, Ctrl+Shift+X on Windows) &rarr; search &ldquo;Claude Code&rdquo; &rarr; Install</span></span>
-        </li>
-        <li class="ws-check-item" data-id="2-4" onclick="check(this)">
-          <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Open Claude Code and sign in with your Claude Pro account<span class="ws-check-detail">Click the Claude Code icon in VS Code&rsquo;s sidebar and follow the authentication prompts</span></span>
+          <span class="ws-check-label">Restart your terminal, then run <code>claude</code> and authenticate<span class="ws-check-detail">Close and reopen your terminal, then type <code>claude</code> to log in with your Pro account</span></span>
         </li>
       </ul>
     </div>
