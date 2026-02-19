@@ -1241,16 +1241,6 @@
           <span>&#128172;</span>
           <span><strong>This step is all conversation.</strong> Claude will interview you &mdash; just answer naturally. With Wispr Flow, you can dictate your answers out loud instead of typing. The more freely you speak, the richer your style guides will be.</span>
         </div>
-
-        <div class="prompt-example">
-          <strong>Just say this</strong>
-          "Help me create a visual-identity.md file. Ask me questions about my color preferences, fonts I like, and the overall aesthetic I'm going for. Then write the file."
-        </div>
-
-        <div class="prompt-example">
-          <strong>Then say this</strong>
-          "Now help me create a writing-style.md. Interview me about my preferred tone, how formal I write, words I avoid, and how I structure documents. Then write the file."
-        </div>
       </div>
 
       <ul class="ws-checklist">
@@ -1260,11 +1250,25 @@
         </li>
         <li class="ws-check-item" data-id="6-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Ask Claude to help create your <code>visual-identity.md</code><span class="ws-check-detail">Let Claude interview you about colors, fonts, and aesthetic &mdash; speak your answers with Wispr</span></span>
+          <span class="ws-check-label">
+            Ask Claude to help create your <code>visual-identity.md</code>
+            <span class="ws-check-detail">Let Claude interview you about colors, fonts, and aesthetic &mdash; speak your answers with Wispr</span>
+            <div class="prompt-example" style="margin-top: 10px;" onclick="event.stopPropagation()">
+              <strong>Just say this</strong>
+              "Help me create a visual-identity.md file. Ask me questions about my color preferences, fonts I like, and the overall aesthetic I'm going for. Then write the file."
+            </div>
+          </span>
         </li>
         <li class="ws-check-item" data-id="6-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Ask Claude to help create your <code>writing-style.md</code><span class="ws-check-detail">Same approach &mdash; let Claude ask about tone, formality, structure, and words you avoid</span></span>
+          <span class="ws-check-label">
+            Ask Claude to help create your <code>writing-style.md</code>
+            <span class="ws-check-detail">Same approach &mdash; let Claude ask about tone, formality, structure, and words you avoid</span>
+            <div class="prompt-example" style="margin-top: 10px;" onclick="event.stopPropagation()">
+              <strong>Just say this</strong>
+              "Now help me create a writing-style.md. Interview me about my preferred tone, how formal I write, words I avoid, and how I structure documents. Then write the file."
+            </div>
+          </span>
         </li>
         <li class="ws-check-item" data-id="6-4" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
