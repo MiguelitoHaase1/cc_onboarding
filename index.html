@@ -1062,10 +1062,55 @@
     <div class="ws-header" onclick="toggleStep(this)">
       <div class="ws-num"><span class="num-text">3</span><span class="num-check">&#10003;</span></div>
       <div class="ws-header-text">
+        <div class="ws-label">Superpower</div>
+        <h2>Install Wispr Flow for voice dictation</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="3">0 / 3</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Typing prompts is fine, but <em>talking</em> to Claude is transformative. Wispr Flow lets you dictate anywhere your cursor is &mdash; including inside the terminal. Every step from here on can be done by voice. Dictating feels natural, and the output is richer because you speak more freely than you type.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#127908;</span>
+          <span><strong>Why voice matters:</strong> The rest of this workshop is conversational &mdash; configuring Claude, installing skills, creating style guides. Dictation removes the friction between thinking and expressing. No more copy-pasting commands; just tell Claude what you want.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="info">
+          <span>i</span>
+          <span><strong>Wispr Flow</strong> is a system-wide dictation tool. It works in any text field &mdash; terminal, browser, documents. Hold the activation key, speak, and your words appear as text.</span>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="3-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Download and install Wispr Flow<span class="ws-check-detail">Visit <a href="https://www.wispr.flow" target="_blank" style="color: var(--coral);">wispr.flow</a> and follow the installer for your OS</span></span>
+        </li>
+        <li class="ws-check-item" data-id="3-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Grant microphone permissions when prompted<span class="ws-check-detail">Wispr needs mic access to transcribe your voice</span></span>
+        </li>
+        <li class="ws-check-item" data-id="3-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Test it: hold the activation key and speak a sentence<span class="ws-check-detail">Try it in any text field &mdash; your words should appear as you talk</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 4 ─── -->
+  <div class="ws-step" id="ws-4" data-step="4">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">4</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
         <div class="ws-label">Configure</div>
         <h2>Set your output style to Explanatory</h2>
       </div>
-      <span class="ws-progress-badge" data-badge="3">0 / 2</span>
+      <span class="ws-progress-badge" data-badge="4">0 / 2</span>
       <span class="ws-chevron">&#9662;</span>
     </div>
     <div class="ws-body">
@@ -1092,11 +1137,11 @@
       </div>
 
       <ul class="ws-checklist">
-        <li class="ws-check-item" data-id="3-1" onclick="check(this)">
+        <li class="ws-check-item" data-id="4-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
           <span class="ws-check-label">Type <code>/output-style</code> inside Claude Code<span class="ws-check-detail">A menu of styles will appear</span></span>
         </li>
-        <li class="ws-check-item" data-id="3-2" onclick="check(this)">
+        <li class="ws-check-item" data-id="4-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
           <span class="ws-check-label">Select <strong>Explanatory</strong><span class="ws-check-detail">Claude will now explain what it's doing and why as it works</span></span>
         </li>
@@ -1104,15 +1149,15 @@
     </div>
   </div>
 
-  <!-- ─── Step 4 ─── -->
-  <div class="ws-step" id="ws-4" data-step="4">
+  <!-- ─── Step 5 ─── -->
+  <div class="ws-step" id="ws-5" data-step="5">
     <div class="ws-header" onclick="toggleStep(this)">
-      <div class="ws-num"><span class="num-text">4</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-num"><span class="num-text">5</span><span class="num-check">&#10003;</span></div>
       <div class="ws-header-text">
         <div class="ws-label">Extend</div>
         <h2>Install essential skills</h2>
       </div>
-      <span class="ws-progress-badge" data-badge="4">0 / 4</span>
+      <span class="ws-progress-badge" data-badge="5">0 / 4</span>
       <span class="ws-chevron">&#9662;</span>
     </div>
     <div class="ws-body">
@@ -1131,66 +1176,21 @@
       </div>
 
       <ul class="ws-checklist">
-        <li class="ws-check-item" data-id="4-1" onclick="check(this)">
+        <li class="ws-check-item" data-id="5-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
           <span class="ws-check-label">Install document skills (PDF, PPTX, XLSX, DOCX)<span class="ws-check-detail">In Claude Code: /install-skill https://skills.sh/document-skills</span></span>
         </li>
-        <li class="ws-check-item" data-id="4-2" onclick="check(this)">
+        <li class="ws-check-item" data-id="5-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
           <span class="ws-check-label">Install skill-creator<span class="ws-check-detail">/install-skill https://skills.sh/skill-creator</span></span>
         </li>
-        <li class="ws-check-item" data-id="4-3" onclick="check(this)">
+        <li class="ws-check-item" data-id="5-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
           <span class="ws-check-label">Install MCP builder<span class="ws-check-detail">/install-skill https://skills.sh/mcp-builder</span></span>
         </li>
-        <li class="ws-check-item" data-id="4-4" onclick="check(this)">
+        <li class="ws-check-item" data-id="5-4" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
           <span class="ws-check-label">Add Claude in Chrome MCP server<span class="ws-check-detail">claude mcp add --transport sse claude-in-chrome http://localhost:3025/sse</span></span>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ─── Step 5 ─── -->
-  <div class="ws-step" id="ws-5" data-step="5">
-    <div class="ws-header" onclick="toggleStep(this)">
-      <div class="ws-num"><span class="num-text">5</span><span class="num-check">&#10003;</span></div>
-      <div class="ws-header-text">
-        <div class="ws-label">Superpower</div>
-        <h2>Install Wispr Flow for voice dictation</h2>
-      </div>
-      <span class="ws-progress-badge" data-badge="5">0 / 3</span>
-      <span class="ws-chevron">&#9662;</span>
-    </div>
-    <div class="ws-body">
-      <p class="ws-desc">Typing prompts is fine, but <em>talking</em> to Claude is transformative. Wispr Flow lets you dictate anywhere your cursor is &mdash; including inside the terminal. In the next step, Claude will interview you to create your style guides. Dictating your answers feels natural, and the output is richer because you speak more freely than you type.</p>
-
-      <div class="ws-ref">
-        <div class="tip">
-          <span>&#127908;</span>
-          <span><strong>Why voice matters here:</strong> When Claude interviews you about your visual style and writing tone, the best answers are conversational. Dictation removes the friction between thinking and expressing. You'll be surprised how much better the style guides turn out when you just <em>talk</em>.</span>
-        </div>
-      </div>
-
-      <div class="ws-tasks-ref">
-        <div class="info">
-          <span>i</span>
-          <span><strong>Wispr Flow</strong> is a system-wide dictation tool. It works in any text field &mdash; terminal, browser, documents. Hold the activation key, speak, and your words appear as text.</span>
-        </div>
-      </div>
-
-      <ul class="ws-checklist">
-        <li class="ws-check-item" data-id="5-1" onclick="check(this)">
-          <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Download and install Wispr Flow<span class="ws-check-detail">Visit <a href="https://www.wispr.flow" target="_blank" style="color: var(--coral);">wispr.flow</a> and follow the installer for your OS</span></span>
-        </li>
-        <li class="ws-check-item" data-id="5-2" onclick="check(this)">
-          <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Grant microphone permissions when prompted<span class="ws-check-detail">Wispr needs mic access to transcribe your voice</span></span>
-        </li>
-        <li class="ws-check-item" data-id="5-3" onclick="check(this)">
-          <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Test it: hold the activation key and speak a sentence<span class="ws-check-detail">Try it in any text field &mdash; your words should appear as you talk</span></span>
         </li>
       </ul>
     </div>
