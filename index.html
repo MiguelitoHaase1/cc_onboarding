@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Workshop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #FAF9F6;
+      --bg-secondary: #F0EFEB;
+      --bg-card: #FFFFFF;
+      --text-primary: #1A1A1A;
+      --text-secondary: #6B6B6B;
+      --text-muted: #9B9B9B;
+      --coral: #D97757;
+      --coral-light: rgba(217, 119, 87, 0.1);
+      --coral-medium: rgba(217, 119, 87, 0.2);
+      --sage: #B8C4B8;
+      --sage-light: rgba(184, 196, 184, 0.15);
+      --lavender: #C5C1D6;
+      --lavender-light: rgba(197, 193, 214, 0.15);
+      --tan: #D4C4B0;
+      --tan-light: rgba(212, 196, 176, 0.15);
+      --green: #2ea043;
+      --green-light: rgba(46, 160, 67, 0.1);
+      --border-light: #E5E4E0;
+      --border-medium: #D1D0CC;
+      --terminal-bg: #1A1A1A;
+      --terminal-header: #2a2a2a;
+      --terminal-text: #e0e0e0;
+      --terminal-muted: #a0a0a0;
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Sticky Progress Header ── */
+    .progress-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 249, 246, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      transition: box-shadow 200ms ease;
+    }
+    .progress-header.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+    .progress-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .progress-logo {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .progress-logo .dot {
+      width: 8px; height: 8px;
+      background: var(--coral);
+      border-radius: 50%;
+    }
+
+    /* Progress ring */
+    .progress-ring-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .progress-ring {
+      width: 40px; height: 40px;
+      position: relative;
+    }
+    .progress-ring svg { transform: rotate(-90deg); }
+    .progress-ring .bg { stroke: var(--border-light); }
+    .progress-ring .fill {
+      stroke: var(--coral);
+      transition: stroke-dashoffset 500ms ease;
+    }
+    .progress-ring .count {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .progress-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .progress-text strong { color: var(--text-primary); font-weight: 600; }
+
+    /* Step nav pills */
+    .step-pills {
+      display: flex;
+      gap: 4px;
+    }
+    .step-pill {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border-light);
+      transition: all 180ms ease;
+      cursor: pointer;
+    }
+    .step-pill:hover { border-color: var(--coral); color: var(--coral); }
+    .step-pill.active { border-color: var(--coral); color: var(--coral); background: var(--coral-light); }
+    .step-pill.completed {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+
+    @media (max-width: 640px) {
+      .step-pills { display: none; }
+      .progress-logo { font-size: 14px; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 110px 24px 56px;
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: var(--coral-light);
+      color: var(--coral);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--coral); }
+    .hero > p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── Intro sections ── */
+    .intro-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 3.5vw, 28px);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-header p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    .card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+    .intro-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .intro-card h3 {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .intro-card h3 .icon {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .intro-card p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .principle-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      max-width: 900px;
+      margin: 0 auto 40px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-light);
+    }
+    .divider-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--coral);
+    }
+
+    /* ══════════════════════════════════════
+       WORKSHOP STEPS - Checklist-driven
+       ══════════════════════════════════════ */
+    .workshop {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .ws-step {
+      background: var(--bg-card);
+      border: 2px solid var(--border-light);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: border-color 300ms ease, box-shadow 300ms ease;
+    }
+    .ws-step.step-complete {
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px rgba(46, 160, 67, 0.15);
+    }
+
+    /* Step header */
+    .ws-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 28px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 150ms ease;
+    }
+    .ws-header:hover { background: var(--bg-secondary); }
+    .ws-num {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--coral);
+      background: var(--coral-light);
+      flex-shrink: 0;
+      transition: all 300ms ease;
+      position: relative;
+    }
+    .ws-num .num-text { transition: opacity 200ms ease; }
+    .ws-num .num-check {
+      position: absolute;
+      opacity: 0;
+      font-size: 22px;
+      transition: opacity 200ms ease;
+    }
+    .ws-step.step-complete .ws-num {
+      background: var(--green);
+      color: #fff;
+    }
+    .ws-step.step-complete .ws-num .num-text { opacity: 0; }
+    .ws-step.step-complete .ws-num .num-check { opacity: 1; }
+
+    .ws-header-text { flex: 1; }
+    .ws-header-text .ws-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--coral);
+    }
+    .ws-step.step-complete .ws-label { color: var(--green); }
+    .ws-header-text h2 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .ws-progress-badge {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: var(--bg-secondary);
+      transition: all 300ms ease;
+    }
+    .ws-step.step-complete .ws-progress-badge {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .ws-chevron {
+      font-size: 18px;
+      color: var(--text-muted);
+      transition: transform 200ms ease;
+      flex-shrink: 0;
+    }
+    .ws-step.open .ws-chevron { transform: rotate(180deg); }
+
+    /* Step body */
+    .ws-body {
+      display: none;
+      padding: 0 28px 28px;
+      border-top: 1px solid var(--border-light);
+    }
+    .ws-step.open .ws-body { display: block; }
+
+    .ws-desc {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin: 20px 0 20px;
+      max-width: 640px;
+      line-height: 1.65;
+    }
+
+    /* Reference content (terminals, cards, tips) */
+    .ws-ref {
+      margin-bottom: 20px;
+    }
+
+    /* ── Checklist items inside steps ── */
+    .ws-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ws-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      margin: 0 -4px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 150ms ease;
+      user-select: none;
+    }
+    .ws-check-item:hover { background: var(--bg-secondary); }
+
+    .ws-checkbox {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      border: 2px solid var(--border-medium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 14px;
+      color: transparent;
+    }
+    .ws-check-item.checked .ws-checkbox {
+      background: var(--coral);
+      border-color: var(--coral);
+      color: #fff;
+      transform: scale(1.1);
+    }
+    /* Pop animation */
+    @keyframes checkPop {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.25); }
+      60% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    .ws-check-item.just-checked .ws-checkbox {
+      animation: checkPop 350ms ease;
+    }
+
+    .ws-check-label {
+      flex: 1;
+      font-size: 15px;
+      line-height: 1.55;
+      transition: color 200ms ease;
+    }
+    .ws-check-item.checked .ws-check-label {
+      color: var(--text-muted);
+      text-decoration: line-through;
+      text-decoration-color: var(--border-medium);
+    }
+    .ws-check-detail {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-style: normal;
+      text-decoration: none !important;
+    }
+    .ws-check-item.checked .ws-check-detail { text-decoration: none !important; }
+
+    /* ── Step complete celebration ── */
+    @keyframes stepDone {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.01); }
+      50% { transform: scale(0.995); }
+      100% { transform: scale(1); }
+    }
+    .ws-step.just-completed {
+      animation: stepDone 400ms ease;
+    }
+
+    /* ── Terminal blocks ── */
+    .terminal {
+      background: var(--terminal-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 12px 0;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .terminal-header {
+      background: var(--terminal-header);
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #febc2e; }
+    .terminal-dot.green { background: #28c840; }
+    .terminal-title { color: var(--terminal-muted); font-size: 11px; margin-left: 6px; }
+    .terminal-body { padding: 14px 16px; line-height: 1.8; overflow-x: auto; }
+    .terminal-body .prompt { color: var(--coral); }
+    .terminal-body .cmd { color: var(--terminal-text); }
+    .terminal-body .comment { color: var(--terminal-muted); }
+    .terminal-body .output { color: #7ec699; }
+    .terminal-body .flag { color: #6cb6ff; }
+    .terminal-body .path { color: #d4a276; }
+
+    /* Folder tree */
+    .folder-tree {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.9;
+      padding: 4px 0;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+    }
+    .folder-tree .folder { color: var(--coral); font-weight: 500; }
+    .folder-tree .desc { color: var(--text-muted); font-family: var(--font-sans); font-size: 12px; }
+
+    /* Tip / Info callout */
+    .tip {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--coral-light);
+      border-radius: 10px;
+      border-left: 3px solid var(--coral);
+      margin: 12px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .tip strong { color: var(--text-primary); }
+    .info {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--lavender-light);
+      border-radius: 10px;
+      border-left: 3px solid var(--lavender);
+      margin: 12px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .info a { color: var(--coral); }
+
+    /* Inline code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      color: var(--coral);
+    }
+
+    /* Skill chips */
+    .skill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+    }
+    .skill-tag .st-icon {
+      width: 20px; height: 20px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ── All-done celebration ── */
+    .all-done {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+      margin-top: 8px;
+    }
+    .all-done.show { display: block; }
+    .all-done-icon { font-size: 48px; margin-bottom: 16px; }
+    .all-done h2 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .all-done p { color: var(--text-secondary); font-size: 16px; max-width: 480px; margin: 0 auto; }
+
+    /* Accent bgs */
+    .bg-coral { background: var(--coral-light); color: var(--coral); }
+    .bg-sage { background: var(--sage-light); color: #7a9a7a; }
+    .bg-lavender { background: var(--lavender-light); color: #8b86a8; }
+    .bg-tan { background: var(--tan-light); color: #a08e76; }
+
+    /* ── Presentation mode ── */
+    html.presentation { scroll-snap-type: y proximity; }
+
+    .slide-wrapper {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px 40px;
+    }
+
+    html.presentation .hero {
+      padding: 0 24px;
+    }
+    html.presentation .intro-section {
+      margin: 0;
+    }
+    html.presentation .card-row {
+      margin-bottom: 14px;
+    }
+    html.presentation .divider {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 900px;
+    }
+    html.presentation .workshop {
+      max-width: none;
+      padding: 0;
+      margin: 0;
+    }
+    .slide-wrapper > .ws-step {
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 0;
+    }
+
+    .slide-counter {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .nav-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--terminal-bg);
+      color: var(--terminal-text);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: var(--font-sans);
+      opacity: 0.8;
+      z-index: 50;
+      transition: opacity 600ms ease;
+      pointer-events: none;
+    }
+    .nav-hint.hidden { opacity: 0; }
+
+    /* Copy button on terminal blocks */
+    .terminal-header { position: relative; }
+    .terminal-copy {
+      margin-left: auto;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--terminal-muted);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all 150ms ease;
+    }
+    .terminal-copy:hover {
+      border-color: rgba(255,255,255,0.3);
+      color: var(--terminal-text);
+    }
+    .terminal-copy.copied {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /* Sub-slide visibility for presentation */
+    .slide-wrapper[data-sub="overview"] .ws-checklist,
+    .slide-wrapper[data-sub="overview"] .ws-tasks-ref { display: none; }
+    .slide-wrapper[data-sub="tasks"] .ws-desc,
+    .slide-wrapper[data-sub="tasks"] .ws-ref { display: none; }
+
+    /* Sub-slide indicator dots */
+    .sub-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .sub-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border-medium);
+      transition: all 200ms ease;
+    }
+    .sub-dot.active { background: var(--coral); transform: scale(1.3); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 36px 24px;
+      border-top: 1px solid var(--border-light);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ── Troubleshooting details/summary ── */
+    .troubleshoot-section {
+      margin: 16px 0 8px;
+    }
+    .troubleshoot-section > summary {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .troubleshoot-section > summary::-webkit-details-marker { display: none; }
+    .troubleshoot-section > summary::before {
+      content: '▸';
+      display: inline-block;
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: transform 200ms ease;
+    }
+    .troubleshoot-section[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .troubleshoot-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 0 4px 20px;
+    }
+    .troubleshoot-item {
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .troubleshoot-item summary {
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 150ms ease;
+    }
+    .troubleshoot-item summary::-webkit-details-marker { display: none; }
+    .troubleshoot-item summary::before {
+      content: '▸';
+      display: inline-block;
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 200ms ease;
+      flex-shrink: 0;
+    }
+    .troubleshoot-item[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .troubleshoot-item summary:hover { background: var(--bg-secondary); }
+    .troubleshoot-item summary code {
+      font-size: 0.8em;
+    }
+    .troubleshoot-item .ts-body {
+      padding: 0 14px 12px 32px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .troubleshoot-item .ts-body code {
+      font-size: 0.85em;
+    }
+    .troubleshoot-item .ts-body p {
+      margin-bottom: 6px;
+    }
+    .troubleshoot-item .ts-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── Conversation prompt block ── */
+    .prompt-example {
+      background: var(--sage-light);
+      border-left: 3px solid var(--sage);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .prompt-example strong {
+      font-style: normal;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .ws-header { padding: 18px 20px; gap: 12px; }
+      .ws-num { width: 40px; height: 40px; font-size: 17px; border-radius: 12px; }
+      .ws-header-text h2 { font-size: 18px; }
+      .ws-body { padding: 0 20px 20px; }
+      .ws-progress-badge { display: none; }
+      .card-row { grid-template-columns: 1fr; }
+      .troubleshoot-group { padding-left: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Sticky Progress Header ── -->
+<header class="progress-header" id="progressHeader">
+  <div class="progress-inner">
+    <div class="progress-logo">
+      <span class="dot"></span>
+      Claude Code Workshop
+    </div>
+    <div class="progress-ring-wrap">
+      <div class="progress-ring">
+        <svg width="40" height="40" viewBox="0 0 40 40">
+          <circle class="bg" cx="20" cy="20" r="16" fill="none" stroke-width="3" />
+          <circle class="fill" id="ringFill" cx="20" cy="20" r="16" fill="none" stroke-width="3"
+            stroke-linecap="round" stroke-dasharray="100.53" stroke-dashoffset="100.53" />
+        </svg>
+        <span class="count" id="ringCount">0</span>
+      </div>
+      <div class="progress-text"><strong id="doneCount">0</strong> of <strong id="totalCount">0</strong></div>
+    </div>
+    <nav class="step-pills" id="stepPills"></nav>
+  </div>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-badge">Hands-on Workshop</div>
+  <h1>From zero to your first <span>AI-powered document</span></h1>
+  <p>Open your laptop, follow along step by step, and check each box as you go. By the end you'll have a fully configured Claude Code setup and a real PDF to prove it.</p>
+</section>
+
+<!-- ── Why Claude Code ── -->
+<div class="intro-section">
+  <div class="section-header">
+    <div class="hero-badge" style="margin-bottom: 12px;">The big picture</div>
+    <h2>Why Claude Code changes everything</h2>
+    <p>Three capabilities that make this different from chatting in a browser.</p>
+  </div>
+  <div class="card-row">
+    <div class="intro-card" style="border-top: 3px solid var(--coral);">
+      <h3><span class="icon bg-coral">&#8981;</span> Deep indexing</h3>
+      <p>Searches your entire project tree in seconds.</p>
+    </div>
+    <div class="intro-card" style="border-top: 3px solid var(--lavender);">
+      <h3><span class="icon bg-lavender">&#9881;</span> Model + tooling in one</h3>
+      <p>No copy-pasting. Read, write, execute &mdash; one loop.</p>
+    </div>
+    <div class="intro-card" style="border-top: 3px solid var(--sage);">
+      <h3><span class="icon bg-sage">&#9889;</span> Full computer access</h3>
+      <p>Everything your machine can do. No chat box limits.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Principles ── -->
+<div class="intro-section">
+  <div class="section-header">
+    <div class="hero-badge" style="background: var(--lavender-light); color: #8b86a8; margin-bottom: 12px;">Before you begin</div>
+    <h2>Three principles</h2>
+  </div>
+  <div class="card-row">
+    <div class="intro-card">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div class="principle-num bg-coral">1</div>
+        <h3 style="margin: 0; font-size: 18px;">Just do it</h3>
+      </div>
+      <p>Learn by doing, not watching.</p>
+    </div>
+    <div class="intro-card">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div class="principle-num bg-lavender">2</div>
+        <h3 style="margin: 0; font-size: 18px;">Just ask Claude</h3>
+      </div>
+      <p>Hit a wall? Describe it. Claude fixes it.</p>
+    </div>
+    <div class="intro-card">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div class="principle-num bg-sage">3</div>
+        <h3 style="margin: 0; font-size: 18px;">Learning over execution</h3>
+      </div>
+      <p>Ask what it did. Write the lesson down.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Divider ── -->
+<div class="divider">
+  <span class="divider-label">Let's build</span>
+</div>
+
+<!-- ══════════════════════════════════
+     WORKSHOP STEPS
+     ══════════════════════════════════ -->
+<main class="workshop" id="workshop">
+
+  <!-- ─── Step 1 ─── -->
+  <div class="ws-step open" id="ws-1" data-step="1">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">1</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Foundation</div>
+        <h2>Design your folder structure</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="1">0 / 3</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Claude Code works best when it understands your world. By organizing projects by type, each folder gets its own <code>CLAUDE.md</code> &mdash; a file that tells Claude the specific context for that kind of work. Apps get coding instructions. Documents get your style guides. It's like giving Claude a different expert hat for each folder.</p>
+
+      <div class="ws-ref">
+        <div class="folder-tree">
+          <div><span class="folder">/AI</span> <span class="desc">&larr; your root</span></div>
+          <div>&ensp;&ensp;<span class="folder">/apps</span> <span class="desc">Web apps, APIs, full-stack</span></div>
+          <div>&ensp;&ensp;<span class="folder">/problemsolving</span> <span class="desc">Analysis, data, research</span></div>
+          <div>&ensp;&ensp;<span class="folder">/doc_creation</span> <span class="desc">PDFs, decks, reports</span></div>
+          <div>&ensp;&ensp;<span class="folder">/context_creation</span> <span class="desc">Prompts, CLAUDE.md files</span></div>
+          <div>&ensp;&ensp;<span class="folder">/readings</span> <span class="desc">Book notes, summaries</span></div>
+          <div>&ensp;&ensp;<span class="folder">/beliefs</span> <span class="desc">Mental models, principles</span></div>
+          <div>&ensp;&ensp;<span class="folder">/career</span> <span class="desc">Resume, career docs</span></div>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="tip">
+          <span>&#128193;</span>
+          <span><strong>Create these folders using your file manager.</strong> Open Finder (Mac), File Explorer (Windows), or your file manager of choice. Navigate to where you keep projects (Documents, Desktop, etc.) and create the folders shown above.</span>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="1-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Create an <code>AI</code> folder<span class="ws-check-detail">In Documents, Desktop, or wherever you keep your projects</span></span>
+        </li>
+        <li class="ws-check-item" data-id="1-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Create 7 subfolders inside AI<span class="ws-check-detail">apps, problemsolving, doc_creation, context_creation, readings, beliefs, career</span></span>
+        </li>
+        <li class="ws-check-item" data-id="1-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Open the AI folder and confirm all 7 subfolders are there</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 2 ─── -->
+  <div class="ws-step" id="ws-2" data-step="2">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">2</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Getting Started</div>
+        <h2>Subscribe and install Claude Code</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="2">0 / 4</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Head to <a href="https://claude.ai" target="_blank" style="color: var(--coral); font-weight: 500;">claude.ai</a> and sign up for a Claude Pro subscription. Once you're in, Claude will nudge you to install Claude Code &mdash; follow that flow. The easiest way to get it running is through VS Code: just install the extension and you're good to go.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#9889;</span>
+          <span><strong>Why Pro?</strong> Claude Code requires a Claude Pro (or Max) subscription. This unlocks the full power of Claude directly on your machine &mdash; not just chat in a browser, but an AI that can read your files, run commands, and build things for you.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="info">
+          <span>i</span>
+          <span><strong>VS Code makes this easy.</strong> Instead of installing via the terminal, we'll use the Claude Code extension for VS Code. It handles all the setup for you &mdash; no commands to memorize, no PATH issues, just install and go.</span>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="2-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Go to <a href="https://claude.ai" target="_blank" style="color: var(--coral);">claude.ai</a> and subscribe to Claude Pro<span class="ws-check-detail">Create an account if you don't have one, then upgrade to Pro</span></span>
+        </li>
+        <li class="ws-check-item" data-id="2-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Download and install <a href="https://code.visualstudio.com" target="_blank" style="color: var(--coral);">VS Code</a><span class="ws-check-detail">Skip this if you already have VS Code installed</span></span>
+        </li>
+        <li class="ws-check-item" data-id="2-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Install the <strong>Claude Code</strong> extension in VS Code<span class="ws-check-detail">Open VS Code &rarr; Extensions sidebar (&#8984;&#8679;X on Mac, Ctrl+Shift+X on Windows) &rarr; search &ldquo;Claude Code&rdquo; &rarr; Install</span></span>
+        </li>
+        <li class="ws-check-item" data-id="2-4" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Open Claude Code and sign in with your Claude Pro account<span class="ws-check-detail">Click the Claude Code icon in VS Code&rsquo;s sidebar and follow the authentication prompts</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 3 ─── -->
+  <div class="ws-step" id="ws-3" data-step="3">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">3</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Configure</div>
+        <h2>Set your output style to Explanatory</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="3">0 / 2</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Most people use AI as a vending machine &mdash; put in a prompt, get an output. Explanatory mode flips this. Claude teaches you <em>why</em> it makes each choice, so you build real intuition over time. It's the difference between getting a fish and learning to fish.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#9733;</span>
+          <span><strong>What this does:</strong> Claude will add educational insights before and after writing code, explaining implementation choices. It's like having a tutor who codes with you instead of just for you.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
+            <span class="terminal-title">Inside Claude Code</span>
+          </div>
+          <div class="terminal-body">
+            <span class="prompt">&gt;</span> <span class="cmd">/output-style</span><br>
+            <span class="comment"># Select "Explanatory" from the menu</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="3-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Type <code>/output-style</code> inside Claude Code<span class="ws-check-detail">A menu of styles will appear</span></span>
+        </li>
+        <li class="ws-check-item" data-id="3-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Select <strong>Explanatory</strong><span class="ws-check-detail">Claude will now explain what it's doing and why as it works</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 4 ─── -->
+  <div class="ws-step" id="ws-4" data-step="4">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">4</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Extend</div>
+        <h2>Install essential skills</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="4">0 / 4</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Out of the box, Claude Code is powerful. Skills make it <em>specialized</em>. Each skill teaches Claude a new domain &mdash; document creation, browser automation, MCP integrations. Think of it like hiring a team of specialists instead of one generalist.</p>
+
+      <div class="ws-ref">
+        <div class="skill-row">
+          <span class="skill-tag"><span class="st-icon bg-coral">PDF</span> PDF</span>
+          <span class="skill-tag"><span class="st-icon bg-lavender">PPT</span> PPTX</span>
+          <span class="skill-tag"><span class="st-icon bg-sage">XLS</span> XLSX</span>
+          <span class="skill-tag"><span class="st-icon bg-tan">DOC</span> DOCX</span>
+          <span class="skill-tag"><span class="st-icon bg-lavender">+</span> Skill Creator</span>
+          <span class="skill-tag"><span class="st-icon bg-sage">&lt;/&gt;</span> MCP Builder</span>
+          <span class="skill-tag"><span class="st-icon bg-coral">&#9673;</span> Chrome MCP</span>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="4-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Install document skills (PDF, PPTX, XLSX, DOCX)<span class="ws-check-detail">In Claude Code: /install-skill https://skills.sh/document-skills</span></span>
+        </li>
+        <li class="ws-check-item" data-id="4-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Install skill-creator<span class="ws-check-detail">/install-skill https://skills.sh/skill-creator</span></span>
+        </li>
+        <li class="ws-check-item" data-id="4-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Install MCP builder<span class="ws-check-detail">/install-skill https://skills.sh/mcp-builder</span></span>
+        </li>
+        <li class="ws-check-item" data-id="4-4" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Add Claude in Chrome MCP server<span class="ws-check-detail">claude mcp add --transport sse claude-in-chrome http://localhost:3025/sse</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 5 ─── -->
+  <div class="ws-step" id="ws-5" data-step="5">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">5</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Superpower</div>
+        <h2>Install Wispr Flow for voice dictation</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="5">0 / 3</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Typing prompts is fine, but <em>talking</em> to Claude is transformative. Wispr Flow lets you dictate anywhere your cursor is &mdash; including inside the terminal. In the next step, Claude will interview you to create your style guides. Dictating your answers feels natural, and the output is richer because you speak more freely than you type.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#127908;</span>
+          <span><strong>Why voice matters here:</strong> When Claude interviews you about your visual style and writing tone, the best answers are conversational. Dictation removes the friction between thinking and expressing. You'll be surprised how much better the style guides turn out when you just <em>talk</em>.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="info">
+          <span>i</span>
+          <span><strong>Wispr Flow</strong> is a system-wide dictation tool. It works in any text field &mdash; terminal, browser, documents. Hold the activation key, speak, and your words appear as text.</span>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="5-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Download and install Wispr Flow<span class="ws-check-detail">Visit <a href="https://www.wispr.flow" target="_blank" style="color: var(--coral);">wispr.flow</a> and follow the installer for your OS</span></span>
+        </li>
+        <li class="ws-check-item" data-id="5-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Grant microphone permissions when prompted<span class="ws-check-detail">Wispr needs mic access to transcribe your voice</span></span>
+        </li>
+        <li class="ws-check-item" data-id="5-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Test it: hold the activation key and speak a sentence<span class="ws-check-detail">Try it in any text field &mdash; your words should appear as you talk</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 6 ─── -->
+  <div class="ws-step" id="ws-6" data-step="6">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">6</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Configure</div>
+        <h2>Create your style guides with Claude</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="6">0 / 4</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">Here's where the magic starts. Instead of writing style guides yourself, you'll have Claude <em>interview</em> you and create them. This is the fundamental pattern: describe what you want, let Claude ask clarifying questions, iterate until it's right. Once you have these two files, every document Claude creates will look and sound like you.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#9733;</span>
+          <span><strong>This is your first real Claude exercise!</strong> Notice how Claude asks follow-up questions, adapts to your answers, and produces a structured document. This is the pattern you'll use for everything.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="prompt-example">
+          <strong>Example prompt &mdash; visual identity</strong>
+          "Help me create a visual-identity.md file. Ask me questions about my color preferences, fonts I like, and the overall aesthetic I'm going for. Then write the file."
+        </div>
+
+        <div class="prompt-example">
+          <strong>Example prompt &mdash; writing style</strong>
+          "Now help me create a writing-style.md. Interview me about my preferred tone, how formal I write, words I avoid, and how I structure documents. Then write the file."
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="6-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Open your terminal and navigate to your AI folder, then type <code>claude</code><span class="ws-check-detail">Mac: open Terminal. Windows: open PowerShell. Then navigate to your AI folder.</span></span>
+        </li>
+        <li class="ws-check-item" data-id="6-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Ask Claude to help create your <code>visual-identity.md</code><span class="ws-check-detail">Use the example prompt above &mdash; let Claude interview you about colors, fonts, and aesthetic</span></span>
+        </li>
+        <li class="ws-check-item" data-id="6-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Ask Claude to help create your <code>writing-style.md</code><span class="ws-check-detail">Same approach &mdash; let Claude ask about tone, formality, structure, and words you avoid</span></span>
+        </li>
+        <li class="ws-check-item" data-id="6-4" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Review both files and reference them in your <code>CLAUDE.md</code><span class="ws-check-detail">Add file paths under a ## Style Guidelines section so all projects inherit them</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 7 ─── -->
+  <div class="ws-step" id="ws-7" data-step="7">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">7</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Prepare</div>
+        <h2>Pull source material into your project</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="7">0 / 3</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">AI output is only as good as the context you give it. By dropping your reference documents into a project folder, Claude can read, synthesize, and build on <em>real material</em> &mdash; not hallucinate from thin air. Better input equals dramatically better output.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#9889;</span>
+          <span><strong>Why context matters:</strong> Claude reads every file in your project. The more relevant material you give it, the more accurate, specific, and useful its output becomes. Think of source documents as Claude's research library.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="folder-tree">
+          <div><span class="folder">AI / doc_creation /</span></div>
+          <div>&ensp;&ensp;<span class="folder">my-first-pdf /</span></div>
+          <div>&ensp;&ensp;&ensp;&ensp;<span class="folder">sources /</span> <span class="desc">&larr; your reference docs go here</span></div>
+        </div>
+
+        <div class="tip">
+          <span>&#128193;</span>
+          <span><strong>Use your file manager for this step.</strong> Navigate to <code>doc_creation</code> inside your AI folder. Create a new folder called <code>my-first-pdf</code>, and inside that, create a <code>sources</code> folder. Then drag your reference documents into it.</span>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="7-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Create a <code>my-first-pdf</code> folder with a <code>sources</code> subfolder<span class="ws-check-detail">Inside AI &rarr; doc_creation</span></span>
+        </li>
+        <li class="ws-check-item" data-id="7-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Drag at least one reference document into <code>sources</code><span class="ws-check-detail">PDF, Word doc, notes &mdash; anything with content you want in the output</span></span>
+        </li>
+        <li class="ws-check-item" data-id="7-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Open your terminal, navigate to <code>my-first-pdf</code>, and type <code>claude</code><span class="ws-check-detail">Mac: Terminal. Windows: PowerShell.</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── Step 8 ─── -->
+  <div class="ws-step" id="ws-8" data-step="8">
+    <div class="ws-header" onclick="toggleStep(this)">
+      <div class="ws-num"><span class="num-text">8</span><span class="num-check">&#10003;</span></div>
+      <div class="ws-header-text">
+        <div class="ws-label">Create</div>
+        <h2>Make your first shiny PDF</h2>
+      </div>
+      <span class="ws-progress-badge" data-badge="8">0 / 3</span>
+      <span class="ws-chevron">&#9662;</span>
+    </div>
+    <div class="ws-body">
+      <p class="ws-desc">This is the payoff. Everything comes together &mdash; your folder structure, your skills, your style guides, your source material. One prompt, and Claude builds a polished, branded document. Same pattern works for slide decks, spreadsheets, web apps, and anything else you'll build with Claude.</p>
+
+      <div class="ws-ref">
+        <div class="tip">
+          <span>&#9889;</span>
+          <span><strong>The compound effect:</strong> Each step we took wasn't just setup &mdash; it was context. Claude now knows your aesthetic, your voice, and your source material. That's why the output feels like <em>you</em> made it, not a machine.</span>
+        </div>
+      </div>
+
+      <div class="ws-tasks-ref">
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
+            <span class="terminal-title">Claude Code session</span>
+          </div>
+          <div class="terminal-body">
+            <span class="output">> Create a polished PDF from the sources in ./sources/.</span><br>
+            <span class="output">> Use my visual-identity.md for styling and</span><br>
+            <span class="output">> writing-style.md for tone.</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="ws-checklist">
+        <li class="ws-check-item" data-id="8-1" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Give Claude the prompt to create your PDF<span class="ws-check-detail">Reference sources, visual identity, and writing style</span></span>
+        </li>
+        <li class="ws-check-item" data-id="8-2" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Review the output and iterate if needed<span class="ws-check-detail">Ask Claude to adjust styling, tone, structure &mdash; just describe what you want different</span></span>
+        </li>
+        <li class="ws-check-item" data-id="8-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Open the PDF and confirm it looks great<span class="ws-check-detail">Your brand colors, fonts, and voice should all be there</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── All Done ── -->
+<div class="all-done" id="allDone">
+  <div class="all-done-icon">&#127881;</div>
+  <h2>Workshop complete!</h2>
+  <p>You have a fully configured Claude Code setup: organized folders, installed skills, personal style guides, and a real document to show for it. Same pattern works for slide decks, spreadsheets, web apps, and anything else.</p>
+</div>
+
+<footer class="footer">
+  Claude Code Onboarding Workshop &middot; Built with Claude Code
+</footer>
+
+<script>
+  const STORAGE_KEY = 'cc-workshop-v2';
+  const TOTAL_STEPS = 8;
+
+  // ── State ──
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { state = {}; }
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // ── Init ──
+  function init() {
+    // Restore checks
+    document.querySelectorAll('.ws-check-item').forEach(li => {
+      if (state[li.dataset.id]) li.classList.add('checked');
+    });
+    // Build nav pills
+    const pillsEl = document.getElementById('stepPills');
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+      const a = document.createElement('a');
+      a.className = 'step-pill';
+      a.textContent = i;
+      a.href = '#ws-' + i;
+      a.dataset.pill = i;
+      pillsEl.appendChild(a);
+    }
+    updateAll();
+  }
+
+  // ── Toggle step open/close ──
+  function toggleStep(header) {
+    const step = header.closest('.ws-step');
+    step.classList.toggle('open');
+  }
+
+  // ── Check an item ──
+  function check(li) {
+    const id = li.dataset.id;
+    const wasChecked = li.classList.contains('checked');
+
+    if (wasChecked) {
+      li.classList.remove('checked', 'just-checked');
+      delete state[id];
+    } else {
+      li.classList.add('checked', 'just-checked');
+      state[id] = true;
+      setTimeout(() => li.classList.remove('just-checked'), 400);
+    }
+    save();
+    updateAll();
+  }
+
+  // ── Update everything ──
+  function updateAll() {
+    let totalChecked = 0;
+    let totalItems = 0;
+
+    for (let s = 1; s <= TOTAL_STEPS; s++) {
+      const stepEl = document.getElementById('ws-' + s);
+      const items = stepEl.querySelectorAll('.ws-check-item');
+      const checked = stepEl.querySelectorAll('.ws-check-item.checked');
+      const badge = stepEl.querySelector('.ws-progress-badge');
+
+      totalItems += items.length;
+      totalChecked += checked.length;
+
+      badge.textContent = checked.length + ' / ' + items.length;
+
+      const wasComplete = stepEl.classList.contains('step-complete');
+      const isComplete = checked.length === items.length && items.length > 0;
+
+      if (isComplete && !wasComplete) {
+        stepEl.classList.add('step-complete', 'just-completed');
+        setTimeout(() => stepEl.classList.remove('just-completed'), 500);
+        // Auto-open next step
+        const next = document.getElementById('ws-' + (s + 1));
+        if (next && !next.classList.contains('open')) {
+          next.classList.add('open');
+          setTimeout(() => { const t = next.closest('.slide-wrapper') || next; t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+        }
+      } else if (!isComplete) {
+        stepEl.classList.remove('step-complete');
+      }
+
+      // Nav pills
+      const pill = document.querySelector('[data-pill="' + s + '"]');
+      if (pill) {
+        pill.classList.toggle('completed', isComplete);
+      }
+    }
+
+    // Global progress
+    document.getElementById('doneCount').textContent = totalChecked;
+    document.getElementById('totalCount').textContent = totalItems;
+    document.getElementById('ringCount').textContent = totalChecked;
+
+    // Ring
+    const circumference = 2 * Math.PI * 16; // r=16
+    const pct = totalItems > 0 ? totalChecked / totalItems : 0;
+    const offset = circumference * (1 - pct);
+    document.getElementById('ringFill').style.strokeDashoffset = offset;
+
+    // All done?
+    const allDone = totalChecked === totalItems && totalItems > 0;
+    document.getElementById('allDone').classList.toggle('show', allDone);
+  }
+
+  // ── Scroll shadow ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('progressHeader').classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  init();
+
+  // ── Copy buttons on terminal blocks ──
+  document.querySelectorAll('.terminal').forEach(term => {
+    const header = term.querySelector('.terminal-header');
+    const body = term.querySelector('.terminal-body');
+    if (!header || !body) return;
+    const btn = document.createElement('button');
+    btn.className = 'terminal-copy';
+    btn.textContent = 'Copy';
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const cmds = [...body.querySelectorAll('.cmd')];
+      const outputs = [...body.querySelectorAll('.output')];
+      let text;
+      if (cmds.length > 0) {
+        text = cmds.map(el => el.textContent.trim()).join('\n');
+      } else if (outputs.length > 0) {
+        text = outputs.map(el => el.textContent.trim()).join('\n');
+      } else {
+        text = body.textContent.trim();
+      }
+      navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    };
+    header.appendChild(btn);
+  });
+
+  // ── Presentation mode with sub-slides ──
+  (function initPresentation() {
+    // Identify all sections that become slides
+    const sections = [
+      document.querySelector('.hero'),
+      ...document.querySelectorAll('.intro-section'),
+      document.querySelector('.divider'),
+      ...document.querySelectorAll('.ws-step'),
+    ].filter(Boolean);
+
+    // Build slides array: each entry is { wrapper, sub? }
+    // Workshop steps get two entries (overview + tasks), others get one
+    const slides = [];
+
+    sections.forEach(el => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'slide-wrapper';
+      el.parentNode.insertBefore(wrapper, el);
+      wrapper.appendChild(el);
+
+      if (el.classList.contains('ws-step')) {
+        // Two sub-slides per workshop step
+        slides.push({ wrapper, sub: 'overview' });
+        slides.push({ wrapper, sub: 'tasks' });
+        // Start showing overview
+        wrapper.setAttribute('data-sub', 'overview');
+      } else {
+        slides.push({ wrapper });
+      }
+    });
+
+    document.documentElement.classList.add('presentation');
+
+    // Auto-open all workshop steps
+    document.querySelectorAll('.ws-step').forEach(s => s.classList.add('open'));
+
+    // Slide counter in header
+    const counter = document.createElement('div');
+    counter.className = 'slide-counter';
+    document.querySelector('.progress-inner').appendChild(counter);
+
+    let currentSlide = 0;
+
+    function updateCounter() {
+      counter.textContent = (currentSlide + 1) + ' / ' + slides.length;
+    }
+    updateCounter();
+
+    function goToSlide(index) {
+      index = Math.max(0, Math.min(index, slides.length - 1));
+      const prev = slides[currentSlide];
+      const next = slides[index];
+      currentSlide = index;
+
+      // Set sub-slide visibility
+      if (next.sub) {
+        next.wrapper.setAttribute('data-sub', next.sub);
+      } else {
+        next.wrapper.removeAttribute('data-sub');
+      }
+
+      // Only scroll if moving to a different wrapper
+      if (!prev || next.wrapper !== prev.wrapper) {
+        next.wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      updateCounter();
+    }
+
+    // Track current slide on scroll via IntersectionObserver
+    const uniqueWrappers = [...new Set(slides.map(s => s.wrapper))];
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // When a wrapper scrolls into view, find its first slide entry
+          const idx = slides.findIndex(s => s.wrapper === entry.target);
+          if (idx !== -1) {
+            currentSlide = idx;
+            if (slides[idx].sub) {
+              entry.target.setAttribute('data-sub', slides[idx].sub);
+            }
+            updateCounter();
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+    uniqueWrappers.forEach(w => observer.observe(w));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || (e.key === ' ' && !e.shiftKey)) {
+        e.preventDefault(); goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || (e.key === ' ' && e.shiftKey)) {
+        e.preventDefault(); goToSlide(currentSlide - 1);
+      }
+    });
+
+    // Intercept step-pill clicks to scroll to wrapper's first sub-slide
+    document.querySelectorAll('.step-pill').forEach(pill => {
+      pill.addEventListener('click', e => {
+        e.preventDefault();
+        const stepId = pill.getAttribute('href').slice(1);
+        const step = document.getElementById(stepId);
+        const wrapper = step && step.closest('.slide-wrapper');
+        if (wrapper) {
+          const idx = slides.findIndex(s => s.wrapper === wrapper);
+          if (idx !== -1) goToSlide(idx);
+        }
+      });
+    });
+
+    // Brief navigation hint
+    const hint = document.createElement('div');
+    hint.className = 'nav-hint';
+    hint.textContent = '\u2190 \u2192 arrow keys to navigate slides';
+    document.body.appendChild(hint);
+    setTimeout(() => hint.classList.add('hidden'), 4000);
+    setTimeout(() => hint.remove(), 5000);
+  })();
+</script>
+</body>
+</html>
