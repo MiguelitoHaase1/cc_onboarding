@@ -1110,7 +1110,7 @@
         <div class="ws-label">Configure</div>
         <h2>Set your output style to Explanatory</h2>
       </div>
-      <span class="ws-progress-badge" data-badge="4">0 / 2</span>
+      <span class="ws-progress-badge" data-badge="4">0 / 3</span>
       <span class="ws-chevron">&#9662;</span>
     </div>
     <div class="ws-body">
@@ -1124,26 +1124,29 @@
       </div>
 
       <div class="ws-tasks-ref">
-        <div class="terminal">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
-            <span class="terminal-title">Inside Claude Code</span>
-          </div>
-          <div class="terminal-body">
-            <span class="prompt">&gt;</span> <span class="cmd">/output-style</span><br>
-            <span class="comment"># Select "Explanatory" from the menu</span>
-          </div>
+        <div class="info">
+          <span>&#128172;</span>
+          <span><strong>You're inside Claude now &mdash; just talk to it.</strong> Claude understands plain language. You don't need to memorize commands. Instead of typing <code>/output-style</code>, you can just say: <em>&ldquo;Please change my output style to explanatory.&rdquo;</em> With Wispr Flow, you can literally speak this out loud and Claude will do it.</span>
+        </div>
+
+        <div class="prompt-example">
+          <strong>Just say this</strong>
+          "Hey Claude, please switch my output style to explanatory mode."
         </div>
       </div>
 
       <ul class="ws-checklist">
         <li class="ws-check-item" data-id="4-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Type <code>/output-style</code> inside Claude Code<span class="ws-check-detail">A menu of styles will appear</span></span>
+          <span class="ws-check-label">Open your terminal, navigate to your AI folder, and type <code>claude</code><span class="ws-check-detail">This launches Claude Code. From here on, you're talking to Claude.</span></span>
         </li>
         <li class="ws-check-item" data-id="4-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Select <strong>Explanatory</strong><span class="ws-check-detail">Claude will now explain what it's doing and why as it works</span></span>
+          <span class="ws-check-label">Ask Claude to change your output style to Explanatory<span class="ws-check-detail">Say it in your own words, or type <code>/output-style</code> and select Explanatory from the menu</span></span>
+        </li>
+        <li class="ws-check-item" data-id="4-3" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Confirm Claude is now explaining what it does<span class="ws-check-detail">Ask it anything &mdash; you should see educational insights in the response</span></span>
         </li>
       </ul>
     </div>
@@ -1157,7 +1160,7 @@
         <div class="ws-label">Extend</div>
         <h2>Install essential skills</h2>
       </div>
-      <span class="ws-progress-badge" data-badge="5">0 / 4</span>
+      <span class="ws-progress-badge" data-badge="5">0 / 5</span>
       <span class="ws-chevron">&#9662;</span>
     </div>
     <div class="ws-body">
@@ -1175,22 +1178,38 @@
         </div>
       </div>
 
+      <div class="ws-tasks-ref">
+        <div class="info">
+          <span>&#128172;</span>
+          <span><strong>Remember: just talk to Claude.</strong> You can say things like <em>&ldquo;Install the document skills for PDF, PowerPoint, Excel, and Word&rdquo;</em> and Claude will figure out the right command. Or dictate it with Wispr Flow &mdash; same result, zero typing.</span>
+        </div>
+
+        <div class="prompt-example">
+          <strong>Just say this</strong>
+          "Please install the document skills from skills.sh &mdash; I want PDF, PPTX, XLSX, and DOCX. Also install the skill creator and the MCP builder."
+        </div>
+      </div>
+
       <ul class="ws-checklist">
         <li class="ws-check-item" data-id="5-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Install document skills (PDF, PPTX, XLSX, DOCX)<span class="ws-check-detail">In Claude Code: /install-skill https://skills.sh/document-skills</span></span>
+          <span class="ws-check-label">Make sure Claude is open<span class="ws-check-detail">Type <code>claude</code> in your terminal if it&rsquo;s not already running</span></span>
         </li>
         <li class="ws-check-item" data-id="5-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Install skill-creator<span class="ws-check-detail">/install-skill https://skills.sh/skill-creator</span></span>
+          <span class="ws-check-label">Install document skills (PDF, PPTX, XLSX, DOCX)<span class="ws-check-detail">Ask Claude, or type: <code>/install-skill https://skills.sh/document-skills</code></span></span>
         </li>
         <li class="ws-check-item" data-id="5-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Install MCP builder<span class="ws-check-detail">/install-skill https://skills.sh/mcp-builder</span></span>
+          <span class="ws-check-label">Install skill-creator<span class="ws-check-detail">Ask Claude, or type: <code>/install-skill https://skills.sh/skill-creator</code></span></span>
         </li>
         <li class="ws-check-item" data-id="5-4" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Add Claude in Chrome MCP server<span class="ws-check-detail">claude mcp add --transport sse claude-in-chrome http://localhost:3025/sse</span></span>
+          <span class="ws-check-label">Install MCP builder<span class="ws-check-detail">Ask Claude, or type: <code>/install-skill https://skills.sh/mcp-builder</code></span></span>
+        </li>
+        <li class="ws-check-item" data-id="5-5" onclick="check(this)">
+          <span class="ws-checkbox">&#10003;</span>
+          <span class="ws-check-label">Add Claude in Chrome MCP server<span class="ws-check-detail">Ask Claude, or type: <code>claude mcp add --transport sse claude-in-chrome http://localhost:3025/sse</code></span></span>
         </li>
       </ul>
     </div>
@@ -1218,13 +1237,18 @@
       </div>
 
       <div class="ws-tasks-ref">
+        <div class="info">
+          <span>&#128172;</span>
+          <span><strong>This step is all conversation.</strong> Claude will interview you &mdash; just answer naturally. With Wispr Flow, you can dictate your answers out loud instead of typing. The more freely you speak, the richer your style guides will be.</span>
+        </div>
+
         <div class="prompt-example">
-          <strong>Example prompt &mdash; visual identity</strong>
+          <strong>Just say this</strong>
           "Help me create a visual-identity.md file. Ask me questions about my color preferences, fonts I like, and the overall aesthetic I'm going for. Then write the file."
         </div>
 
         <div class="prompt-example">
-          <strong>Example prompt &mdash; writing style</strong>
+          <strong>Then say this</strong>
           "Now help me create a writing-style.md. Interview me about my preferred tone, how formal I write, words I avoid, and how I structure documents. Then write the file."
         </div>
       </div>
@@ -1232,11 +1256,11 @@
       <ul class="ws-checklist">
         <li class="ws-check-item" data-id="6-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Open your terminal and navigate to your AI folder, then type <code>claude</code><span class="ws-check-detail">Mac: open Terminal. Windows: open PowerShell. Then navigate to your AI folder.</span></span>
+          <span class="ws-check-label">Make sure Claude is open in your AI folder<span class="ws-check-detail">Type <code>claude</code> in your terminal if it&rsquo;s not already running</span></span>
         </li>
         <li class="ws-check-item" data-id="6-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Ask Claude to help create your <code>visual-identity.md</code><span class="ws-check-detail">Use the example prompt above &mdash; let Claude interview you about colors, fonts, and aesthetic</span></span>
+          <span class="ws-check-label">Ask Claude to help create your <code>visual-identity.md</code><span class="ws-check-detail">Let Claude interview you about colors, fonts, and aesthetic &mdash; speak your answers with Wispr</span></span>
         </li>
         <li class="ws-check-item" data-id="6-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
@@ -1295,7 +1319,7 @@
         </li>
         <li class="ws-check-item" data-id="7-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Open your terminal, navigate to <code>my-first-pdf</code>, and type <code>claude</code><span class="ws-check-detail">Mac: Terminal. Windows: PowerShell.</span></span>
+          <span class="ws-check-label">Open your terminal, navigate to <code>my-first-pdf</code>, and type <code>claude</code><span class="ws-check-detail">This opens Claude in your project folder so it can see your source documents</span></span>
         </li>
       </ul>
     </div>
@@ -1323,27 +1347,25 @@
       </div>
 
       <div class="ws-tasks-ref">
-        <div class="terminal">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
-            <span class="terminal-title">Claude Code session</span>
-          </div>
-          <div class="terminal-body">
-            <span class="output">> Create a polished PDF from the sources in ./sources/.</span><br>
-            <span class="output">> Use my visual-identity.md for styling and</span><br>
-            <span class="output">> writing-style.md for tone.</span>
-          </div>
+        <div class="info">
+          <span>&#128172;</span>
+          <span><strong>Just describe what you want.</strong> Claude already has your sources, your visual identity, and your writing style. Tell it what to build in your own words &mdash; or speak it with Wispr.</span>
+        </div>
+
+        <div class="prompt-example">
+          <strong>Just say this</strong>
+          "Create a polished PDF from the sources in my sources folder. Use my visual-identity.md for styling and writing-style.md for tone. Make it look professional and on-brand."
         </div>
       </div>
 
       <ul class="ws-checklist">
         <li class="ws-check-item" data-id="8-1" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Give Claude the prompt to create your PDF<span class="ws-check-detail">Reference sources, visual identity, and writing style</span></span>
+          <span class="ws-check-label">Tell Claude to create your PDF<span class="ws-check-detail">Describe what you want &mdash; reference your sources, visual identity, and writing style</span></span>
         </li>
         <li class="ws-check-item" data-id="8-2" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
-          <span class="ws-check-label">Review the output and iterate if needed<span class="ws-check-detail">Ask Claude to adjust styling, tone, structure &mdash; just describe what you want different</span></span>
+          <span class="ws-check-label">Review the output and iterate if needed<span class="ws-check-detail">Just say what you'd change &mdash; &ldquo;make the headings bigger&rdquo; or &ldquo;more casual tone&rdquo;</span></span>
         </li>
         <li class="ws-check-item" data-id="8-3" onclick="check(this)">
           <span class="ws-checkbox">&#10003;</span>
